@@ -175,7 +175,7 @@ button:focus-visible,#nick:focus-visible{outline:3px solid #e8a334;outline-offse
 @media(prefers-reduced-motion:reduce){.char-stack img,.d-cloud,.d-spark,.rot-icon{animation:none}.big-btn,.btn,#energy{transition:none}}
 
 /* Event display: decoration appears only while the ranking screen is open. */
-.rank-stage{display:none;position:fixed;inset:0;pointer-events:none;overflow:hidden;color:#eaf5ff;background:radial-gradient(ellipse at 50% -10%,#356289 0,transparent 55%),radial-gradient(ellipse at 10% 75%,#173f61 0,transparent 40%),linear-gradient(135deg,#0a1c32,#132d48 50%,#091b30);z-index:0}
+.rank-stage{display:block;position:fixed;inset:0;pointer-events:none;overflow:hidden;color:#eaf5ff;background:radial-gradient(ellipse at 50% -10%,#356289 0,transparent 55%),radial-gradient(ellipse at 10% 75%,#173f61 0,transparent 40%),linear-gradient(135deg,#0a1c32,#132d48 50%,#091b30);z-index:0}
 body:has(#s-rank.show) .rank-stage{display:block}
 #game{z-index:1}
 .rank-stage::before{content:'';position:absolute;inset:0;background-image:radial-gradient(#bfdffb66 1px,transparent 1.5px);background-size:52px 52px;mask-image:linear-gradient(#000,transparent 90%)}
@@ -232,7 +232,7 @@ body:has(#s-rank.show) .rank-stage{display:block}
 .rank-spark{position:absolute;width:22px;aspect-ratio:1;background:#fff9ca;clip-path:polygon(50% 0,63% 36%,100% 50%,63% 64%,50% 100%,37% 64%,0 50%,37% 36%)}
 .rank-spark.s1{left:23%;top:44%}.rank-spark.s2{right:5%;top:38%;width:32px}.rank-spark.s3{right:23%;bottom:23%;background:#fff}.rank-spark.s4{left:5%;bottom:40%;width:15px;background:#fff}
 .rank-staircase{opacity:.6;z-index:1}.rank-staircase i{background:linear-gradient(90deg,#afd9f4,#c3e7fa);border-top:5px solid #f3fcff;border-right:1px solid #fff8;border-radius:8px 8px 0 0}.rank-staircase.right i{background:linear-gradient(90deg,#cdc4ed,#e2d7f6);border-top-color:#fff4fd}
-@media(min-width:1100px) and (min-height:620px){body:has(#s-rank.show) #game{border:2px solid #ffffffdd;box-shadow:0 24px 70px #527ba333,0 0 0 8px #ffffff40}}
+@media(min-width:1100px) and (min-height:620px){#game{border:2px solid #ffffffdd;border-radius:24px;box-shadow:0 24px 70px #527ba333,0 0 0 8px #ffffff40}}
 @media(max-width:1099px),(max-height:619px){.rank-puang,.rank-sun,.rank-cloud,.rank-spark{display:none}}
 
 </style>

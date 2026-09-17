@@ -324,6 +324,7 @@ body:has(#s-rank.show) .rank-stage{display:block}
     <h1>🏆 완강 랭킹 <span class="live-badge" id="rank-live" hidden>LIVE</span></h1><div class="rank-column-labels" aria-hidden="true"><span>순위</span><span>도전자</span><span>도달 계단 · 완강 기록</span></div>
     <div class="board" id="board-rank"><div class="empty">랭킹 불러오는 중...</div></div>
     <button class="big-btn" id="btn-rank-close">닫기</button>
+    <button class="link-btn" id="btn-fs">⛶ 전체화면</button>
     <button class="link-btn" id="btn-reset">기록 전체 초기화 (운영자용)</button>
   </div>
 </div>
@@ -642,6 +643,10 @@ CV.addEventListener('pointerdown',e=>{
   act((e.clientX-r.left)<r.width/2);
 });
 document.addEventListener('keydown',e=>{
+  if($('s-rank').classList.contains('show')){
+    if(e.key.toLowerCase()==='f'){ e.preventDefault(); toggleFs(); }
+    return;
+  }
   if($('s-start').classList.contains('show')){ if(e.key==='Enter') startGame(); return; }
   const k=e.key.toLowerCase();
   if(k==='arrowleft'||k==='a'){ e.preventDefault(); act(true); }
@@ -668,6 +673,33 @@ function backToStart(){
 $('btn-start').addEventListener('click',startGame);
 $('btn-retry').addEventListener('click',backToStart);
 $('btn-again').addEventListener('click',backToStart);
+/* ── 전체화면 ── */
+const fsEl=()=>document.documentElement;
+const isFs=()=>!!(document.fullscreenElement||document.webkitFullscreenElement);
+function enterFs(){
+  const e=fsEl();
+  try{
+    const r = e.requestFullscreen ? e.requestFullscreen({navigationUI:'hide'})
+            : e.webkitRequestFullscreen ? e.webkitRequestFullscreen() : null;
+    if(r&&r.catch) r.catch(()=>{});
+  }catch(err){}
+}
+function exitFs(){
+  try{
+    if(!isFs()) return;
+    const r = document.exitFullscreen ? document.exitFullscreen()
+            : document.webkitExitFullscreen ? document.webkitExitFullscreen() : null;
+    if(r&&r.catch) r.catch(()=>{});
+  }catch(err){}
+}
+function toggleFs(){ isFs()? exitFs() : enterFs(); }
+function paintFs(){
+  const b=$('btn-fs'); if(!b) return;
+  b.textContent = isFs()? '⛵ 전체화면 끄기 (ESC)' : '⛶ 전체화면';
+}
+document.addEventListener('fullscreenchange',paintFs);
+document.addEventListener('webkitfullscreenchange',paintFs);
+
 /* ── 랭킹 실시간 갱신 ── */
 let rankES=null, rankPoll=null;
 function rankLiveStop(){
@@ -691,9 +723,10 @@ function rankLiveStart(){
     if(!rankES || rankES.readyState!==1) renderBoard('board-rank',true);
   },8000);
 }
-function openRank(){ show('s-rank'); renderBoard('board-rank'); rankLiveStart(); }
+function openRank(){ enterFs(); show('s-rank'); renderBoard('board-rank'); rankLiveStart(); paintFs(); }
 $('btn-rank-start').addEventListener('click',openRank);
-$('btn-rank-close').addEventListener('click',()=>{ rankLiveStop(); show('s-start'); });
+$('btn-rank-close').addEventListener('click',()=>{ rankLiveStop(); exitFs(); show('s-start'); });
+$('btn-fs').addEventListener('click',toggleFs);
 $('btn-reset').addEventListener('click',async()=>{
   const pw=prompt('운영자 비밀번호를 입력하세요');
   if(pw===null) return;
